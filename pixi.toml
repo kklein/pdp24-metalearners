@@ -1,0 +1,19 @@
+[project]
+name = "pdp"
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[tasks]
+
+[dependencies]
+python = "3.12.*"
+metalearners = "*"
+matplotlib-base = "*"
+lightgbm = "*"
+pre-commit = "*"
+typos = "*"
+black = "*"
+prettier = "*"
+ruff = "*"
+mypy = "*"
+pre-commit-hooks = "*"
