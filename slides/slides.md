@@ -11,9 +11,9 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-# Catering Causal Inference: An Introduction to `metalearners`
+# CATEring Causal Inference: An Introduction to `metalearners`
 
-## A Flexible MetaLearner Library in Python
+## Flexible MetaLearners in Python
 
 ---
 
@@ -27,7 +27,11 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 
 ---
 
-![bg 40%](imgs/monet-morpheus.png)
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+
+![bg 97%](imgs/monet-morpheus-wide.png)
 
 ---
 
@@ -36,8 +40,188 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 'Ignorance is Bliss' - Thomas Gray (1742) / Publilius Syrus (43 BC)
 -->
 
-![bg 50%](imgs/argument.png)
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+
+![bg 40%](imgs/argument.png)
 
 ---
 
-## Let the data decide
+## Let the data decide!
+
+Let's learn from data which pill we should take.
+
+Empirical **data** on individuals, who have
+  * had their **properties**/covariates evaluated at the time of the intervention
+  * been subject to the **intervention** (taking either of both pills)
+  * had the **outcome** of their happiness measured, 5 years after the intervention
+
+---
+
+## Data setup
+
+Our experiment data contains three different kinds of quantities:
+
+| Name         | Symbol | Definition                                                                     |
+|--------------|--------|--------------------------------------------------------------------------------|
+| Covariates   | $X_i$  | Properties of the time of intervention                                         |
+| Intervention | $W_i$  | $=\begin{cases} 1 & \text{if red pill} \\ 0 & \text{if blue pill} \end{cases}$ |
+| Outcome      | $Y_i$  | Happiness score ($\mathbb{R}$) 5 years after intervention                                     |
+
+
+---
+
+## Treatment effects
+
+As a first step, we can try to estimate the **Average Treatment Effect**
+
+$$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})]$$
+
+---
+
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+
+![bg 100%](imgs/monet-snowflake.png)
+
+---
+
+![](imgs/ites_plain.png)
+
+---
+
+![](imgs/ites_classified.png)
+
+---
+
+## Capturing heterogeneity
+
+Instead of trying to estimate
+
+$$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})]$$
+
+let's try to estimate
+
+$$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill}) | X]$$
+
+---
+
+## Properties (covariates) in our data
+
+|         | age | #phil books | dominant personality trait | education | atheist | ... |
+|---------|-----|-------------|----------------------------|-----------|---------|-----|
+| Anne    | 85  | 14          | extraversion               | BA        | 1       | ... |
+| Bob     | 17  | 1           | openness                   | HS        | 0       | ... |
+| Charlie | 34  | 0           | conscientiousness          | PhD       | 1       | ... |
+| ...     | ... | ...         | ...                        | ...       | ...     | ... |
+
+<!-- Big five personality traits:
+Openness, coscientiousness, extraversion, agreeableness, neurotocism
+-->
+
+---
+
+## Learning a policy
+
+Based on said properties, we can estimate **Conditional Average Treatment Effects**:
+
+1. Estimate $\hat{\tau}(X) = \mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill}) | X]$
+2. Distribute pills according to this policy:
+   $\pi(X) := \begin{cases} \text{blue pill} & \text{if } \hat{\tau}(X) \geq 0 \\ \text{red pill} & \text{if }\hat{\tau}(X) < 0 \end{cases}$
+
+---
+
+## But how?
+
+Estimating $\hat{\tau}(X) = \mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill}) | X]$ is a really difficult statistical problem.
+
+<!-- Why is it difficult? -->
+
+---
+
+## But how?
+
+In an ideal world:
+
+  |         | age | #phil books | ... | $Y(\text{blue pill)}$ | $Y(\text{red pill})$ | $\tau$ |
+  |---------|-----|-------------|-----|-----------------------|----------------------|--------|
+  | Anne    | 85  | 14          | ... | 15.8                  | 13.2                 | 2.6    |
+  | Bob     | 17  | 1           | ... | 32.3                  | 32.4                 | -0.1   |
+  | Charlie | 34  | 0           | ... | 7.0                   | 9.2                  | -2.2   |
+  | ...     | ... | ...         | ... | ...                   | ...                  | ...    |
+
+<p style="visibility:hidden"> The <strong>fundamental problem of Causal Inference</strong> states that we can never observe $Y(\text{blue pill})$ and $Y(\text{red pill})$ simultaneously for the same 'unit'. <p>
+
+<!-- This would be just another regression problem -->
+
+---
+
+## But how?
+
+In reality:
+
+  |         | age | #phil books | ... | $Y(\text{blue pill)}$ | $Y(\text{red pill})$              | $\tau$ |
+  |---------|-----|-------------|-----|-----------------------|-----------------------------------|--------|
+  | Anne    | 85  | 14          | ... | 15.8                  | <span style="color:red;">?</span> | <span style="color:red;">?</span>      |
+  | Bob     | 17  | 1           | ... | <span style="color:red;">?</span>                     | 32.4                              | <span style="color:red;">?</span>      |
+  | Charlie | 34  | 0           | ... | <span style="color:red;">?</span>                     | 9.2                               | <span style="color:red;">?</span>      |
+  | ...     | ... | ...         | ... | ...                   | ...                               | ...    |
+
+
+The **fundamental problem of Causal Inference** states that we can never observe $Y(\text{blue pill})$ and $Y(\text{red pill})$ simultaneously for the same 'unit'.
+
+<!-- This is not an off-the-shelf prediction problem -->
+
+---
+
+## What now?
+
+* We can't know the Individual Treatment Effect (ITE).
+* Yet, we can define an estimand, the Conditional Average Treatment Effect
+  (CATE), which we can actually estimate:
+  $$\tau(X) := \mathbb{E}[Y_{\text{stirring}} - Y_{\text{no stirring}}|X]$$
+* There are various of approaches for estimating CATEs.
+* MetaLearners are a family of approaches for estimating CATEs.
+  * Work by Chernozukov, Wager, Kuenzel, starting in 2017
+
+---
+
+
+## MetaLearners
+
+![bg left 50%](imgs/metalearner2.drawio.svg)
+
+* MetaLearners are **CATE models** which rely on typical, **arbitrary machine learning estimators** (classifiers or regressors) as **components**.
+* Some examples include the S-Learner, T-Learner, F-Learner, X-Learner, R-Learner, M-Learner and DR-Learner.
+
+---
+
+## MetaLearners
+
+![bg left 80%](imgs/metalearner.drawio.svg)
+
+* $W$: Treatment assignments
+* $X$: Covariates/features
+* $Y$: Observed outcomes
+* $\hat{\tau}(X)$: Estimate of the heterogeneous treatment effect/CATE
+
+
+---
+
+# Backup
+
+---
+
+## Conventional assumptions for estimating CATEs
+
+- Positivity/overlap
+- Conditional ignorability/unconfoundedness
+- Stable Unit Treatment Value (SUTVA)
+
+A randomized control trial usually gives us the first two for free.
+
+For more information see e.g. [Athey and Imbens, 2016](https://arxiv.org/pdf/1607.00698.pdf).
+
+---

@@ -60,5 +60,5 @@ repos:
         entry: pixi run typos --force-exclude
         language: system
         types: [text]
-        exclude: "\\.(csv|html)$"
+        exclude: "\\.(csv|html|svg)$"
         require_serial: true
