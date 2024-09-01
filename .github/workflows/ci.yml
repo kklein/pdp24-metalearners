@@ -1,0 +1,51 @@
+name: CI
+on:
+  push:
+  release:
+    types: [published]
+
+jobs:
+  pre-commit-checks:
+    name: Pre-commit Checks
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+      - name: Set up pixi
+        uses: prefix-dev/setup-pixi@ba3bb36eb2066252b2363392b7739741bb777659
+      - name: pre-commit
+        run: pixi run pre-commit-run --color=always --show-diff-on-failure
+
+  compile:
+    name: Compile
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+      - name: Set up pixi
+        uses: prefix-dev/setup-pixi@ba3bb36eb2066252b2363392b7739741bb777659
+      - name: Run marp
+        run: pixi run compile-pdf
+      - name: Upload pdf
+        uses: actions/upload-artifact@v4
+        with:
+          name: slides.pdf
+          path: slides/slides.pdf
+          if-no-files-found: error
+
+  release:
+    name: Release
+    if: github.event_name == 'release' && github.event.action == 'published'
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download pdf
+        uses: actions/download-artifact@v4
+        with:
+          name: slides/slides.pdf
+      - name: Upload to release
+        uses: softprops/action-gh-release@a74c6b72af54cfa997e81df42d94703d6313a2d0
+        with:
+          files: slides.pdf
