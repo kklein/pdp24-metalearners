@@ -32,7 +32,19 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-![bg 40%](imgs/argument.png)
+![bg 40%](imgs/fight.jpg)
+
+---
+
+<!--
+'The unexamined life is not worth living' - Socrates (~400 BC)
+'Ignorance is Bliss' - Thomas Gray (1742) / Publilius Syrus (43 BC)
+-->
+
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+![bg 40%](imgs/fight_2.jpg)
 
 ---
 
@@ -42,7 +54,7 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 
 - Rather, we want to **decide** which **intervention** to choose.
 
-- Intuitively, in order to decide, we'd like to compare the 'outcomes' if taking the blue pill compared to the outcome of taking the red pill.
+- Intuitively, in order to decide, we'd like to **compare the 'outcomes'** if taking the blue pill compared to the outcome of taking the red pill.
   $$Y(\text{blue pill}) - Y(\text{red pill})$$
 
 ---
@@ -226,5 +238,3 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 A randomized control trial usually gives us the first two for free.
 
 For more information see e.g. [Athey and Imbens, 2016](https://arxiv.org/pdf/1607.00698.pdf).
-
----
