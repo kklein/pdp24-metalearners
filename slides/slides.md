@@ -11,26 +11,16 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-# CATEring Causal Inference: An Introduction to `metalearners`
+# CATEring to Causal Inference: An Introduction to `metalearners`
 
 ## Flexible MetaLearners in Python
-
----
-
-## Agenda
-
-- Why care about treatment effect estimation? (5')
-- Introduction to MetaLearners for treatment effect estimation (5')
-- Some shortcomings with existing libraries (5')
-- Demo (10')
-- Q&A (5')
 
 ---
 
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-![bg 97%](imgs/monet-morpheus-wide.png)
+![bg 100%](imgs/monet-morpheus-wide.png)
 
 ---
 
@@ -48,19 +38,28 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 
 ## Let the data decide!
 
-Let's learn from data which pill we should take.
+- We not only want to predict what happens in a world in which we don't have influence on the environment/data generating process.
 
-Empirical **data** on individuals, who have
+- Rather, we want to **decide** which **intervention** to choose.
 
-- had their **properties**/covariates evaluated at the time of the intervention
-- been subject to the **intervention** (taking either of both pills)
-- had the **outcome** of their happiness measured, 5 years after the intervention
+- Intuitively, in order to decide, we'd like to compare the 'outcomes' if taking the blue pill compared to the outcome of taking the red pill.
+  $$Y(\text{blue pill}) - Y(\text{red pill})$$
 
 ---
 
-## Data setup
+## The data
 
-Our experiment data contains three different kinds of quantities:
+- We have empirical **data** on individuals, who have
+
+  - had their **properties**/covariates evaluated at the time of the intervention
+  - been subject to the **intervention** (taking either of both pills)
+  - had the **outcome** of their happiness measured, 5 years after the intervention
+
+---
+
+## The data, more formally
+
+Our experiment data contains three different kinds of quantities per individual $i$:
 
 | Name         | Symbol | Definition                                                                     |
 | ------------ | ------ | ------------------------------------------------------------------------------ |
@@ -68,11 +67,28 @@ Our experiment data contains three different kinds of quantities:
 | Intervention | $W_i$  | $=\begin{cases} 1 & \text{if red pill} \\ 0 & \text{if blue pill} \end{cases}$ |
 | Outcome      | $Y_i$  | Happiness score ($\mathbb{R}$) 5 years after intervention                      |
 
+$\mathcal{D} = \{ (X_i, W_i, Y_i)\}$
+
+---
+
+## $X$: Properties/covariates
+
+|         | age | #phil books | dominant personality trait | education | atheist | ... |
+| ------- | --- | ----------- | -------------------------- | --------- | ------- | --- |
+| Anne    | 85  | 14          | extraversion               | BA        | 1       | ... |
+| Bob     | 17  | 1           | openness                   | HS        | 0       | ... |
+| Charlie | 34  | 0           | conscientiousness          | PhD       | 1       | ... |
+| ...     | ... | ...         | ...                        | ...       | ...     | ... |
+
+<!-- Big five personality traits:
+Openness, coscientiousness, extraversion, agreeableness, neurotocism
+-->
+
 ---
 
 ## Treatment effects
 
-As a first step, we can try to estimate the **Average Treatment Effect**
+Many Causal Inference techniques allow for the estimation of the **Average Treatment Effect**
 
 $$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})]$$
 
@@ -95,46 +111,13 @@ $$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})]$$
 
 ## Capturing heterogeneity
 
-Instead of trying to estimate
+Instead of estimating
 
 $$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})]$$
 
-let's try to estimate
+we'd like to estimate
 
-$$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill}) | X]$$
-
----
-
-## Properties (covariates) in our data
-
-|         | age | #phil books | dominant personality trait | education | atheist | ... |
-| ------- | --- | ----------- | -------------------------- | --------- | ------- | --- |
-| Anne    | 85  | 14          | extraversion               | BA        | 1       | ... |
-| Bob     | 17  | 1           | openness                   | HS        | 0       | ... |
-| Charlie | 34  | 0           | conscientiousness          | PhD       | 1       | ... |
-| ...     | ... | ...         | ...                        | ...       | ...     | ... |
-
-<!-- Big five personality traits:
-Openness, coscientiousness, extraversion, agreeableness, neurotocism
--->
-
----
-
-## Learning a policy
-
-Based on said properties, we can estimate **Conditional Average Treatment Effects**:
-
-1. Estimate $\hat{\tau}(X) = \mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill}) | X]$
-2. Distribute pills according to this policy:
-   $\pi(X) := \begin{cases} \text{blue pill} & \text{if } \hat{\tau}(X) \geq 0 \\ \text{red pill} & \text{if }\hat{\tau}(X) < 0 \end{cases}$
-
----
-
-## But how?
-
-Estimating $\hat{\tau}(X) = \mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill}) | X]$ is a really difficult statistical problem.
-
-<!-- Why is it difficult? -->
+$$Y_i(\text{blue pill}) - Y_i(\text{red pill})$$
 
 ---
 
@@ -174,13 +157,30 @@ The **fundamental problem of Causal Inference** states that we can never observe
 
 ## What now?
 
-- We can't know the Individual Treatment Effect (ITE).
-- Yet, we can define an estimand, the Conditional Average Treatment Effect
-  (CATE), which we can actually estimate:
+- We can't know the Individual Treatment Effect (ITE)
+  $$Y_i(\text{blue pill}) - Y_i(\text{red pill})$$
+- Yet, we **can estimate** the **Conditional Average Treatment Effect (CATE)**
   $$\tau(X) := \mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})|X]$$
-- There are various of approaches for estimating CATEs.
+  - Note the difference from the Average Treatment Effect
+    $$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})]$$
+
+---
+
+## Learning a policy
+
+In order to get to a **decision** as to give what pill to whom, we can now follow the following process:
+
+1. Estimate CATEs $\hat{\tau}(X) = \mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill}) | X]$
+2. Distribute pills according to this policy:
+   $\pi(X) := \begin{cases} \text{blue pill} & \text{if } \hat{\tau}(X) \geq 0 \\ \text{red pill} & \text{if }\hat{\tau}(X) < 0 \end{cases}$
+
+---
+
+## Estimating CATEs
+
+- There are various approaches for estimating CATEs.
 - MetaLearners are a family of approaches for estimating CATEs.
-  - Work by [Chernozhukov(2016)](https://arxiv.org/abs/1608.00060), [Nie(2017)](https://arxiv.org/pdf/1712.04912), [Kunzel(2017)](https://arxiv.org/pdf/1706.03461), [Kennedy(2020)](https://arxiv.org/pdf/2004.14497) and more
+  - Work by [Chernozhukov(2016)](https://arxiv.org/abs/1608.00060), [Nie(2017)](https://arxiv.org/pdf/1712.04912), [Kunzel(2017)](https://arxiv.org/pdf/1706.03461), [Kennedy(2020)](https://arxiv.org/pdf/2004.14497) and more.
 
 ---
 
@@ -203,8 +203,6 @@ The **fundamental problem of Causal Inference** states that we can never observe
   - $Y$: Outcomes
 - Output
   - $\hat{\tau}(X)$: CATE estimates
-
----
 
 ---
 
