@@ -44,7 +44,8 @@ jobs:
       - name: Download pdf
         uses: actions/download-artifact@v4
         with:
-          name: slides/slides.pdf
+          name: slides.pdf
+          path: slides/slides.pdf
       - name: Upload to release
         uses: softprops/action-gh-release@a74c6b72af54cfa997e81df42d94703d6313a2d0
         with:
