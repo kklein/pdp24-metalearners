@@ -1,2 +1,0 @@
-- Install [marp](https://github.com/marp-team/marp-cli)
-- Serve by running `marp slides.md --html --allow-local-files -w`
