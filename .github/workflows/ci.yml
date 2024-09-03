@@ -37,7 +37,7 @@ jobs:
 
   release:
     name: Release
-    # if: github.event_name == 'release' && github.event.action == 'published'
+    if: github.event_name == 'release' && github.event.action == 'published'
     needs: compile
     runs-on: ubuntu-latest
     steps:
