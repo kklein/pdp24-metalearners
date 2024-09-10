@@ -218,6 +218,116 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 
 ---
 
+## Accessing base models
+
+![bg right 80%](imgs/modularity.drawio.svg)
+
+- Isolate the base models to evaluate them or to reuse them
+
+---
+## Accessing base models
+```python
+from metalearners import RLearner
+from lightgbm import LGBMRegressor, LGBMClassifier
+
+rlearner = RLearner(
+    nuisance_model_factory=LGBMRegressor,
+    propensity_model_factory=LGBMClassifier,
+    treatment_model_factory=LGBMRegressor,
+    is_classification=False,
+    n_variants=2,
+)
+rlearner.fit(
+    X=df[feature_columns],
+    y=df[outcome_column],
+    w=df[treatment_column],
+)
+
+outcome_model = rlearner._nuisance_models["outcome_model"]
+```
+
+---
+
+## Reusing base models
+
+```python
+from sklearn.linear_model import LinearRegression, LogisticRegression
+
+rlearner_new = RLearner(
+    propensity_model_factory=LogisticRegression,
+    treatment_model_factory=LinearRegression,
+    is_classification=False,
+    fitted_nuisance_models={"outcome_model": outcome_model},
+    propensity_model_params={"max_iter": 500},
+    n_variants=2,
+)
+rlearner_new.fit(
+    X=df[feature_columns],
+    y=df[outcome_column],
+    w=df[treatment_column],
+)
+```
+
+---
+## Reusing base models accross different metalearners
+
+```python
+from metalearners import DRLearner
+
+trained_propensity_model = rlearner._nuisance_models["propensity_model"][0]
+
+drlearner = DRLearner(
+    nuisance_model_factory=LGBMRegressor,
+    treatment_model_factory=LGBMRegressor,
+    fitted_propensity_model=trained_propensity_model,
+    is_classification=False,
+    n_variants=2,
+)
+drlearner.fit(
+    X=df[feature_columns],
+    y=df[outcome_column],
+    w=df[treatment_column],
+)
+```
+---
+
+## Hyperparameter optimization
+
+* HPO can have massive impacts on the prediction quality in regular Machine Learning
+* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in metalearners
+* Three levels to optimize for:
+  * The MetaLearner architecture
+  * The model to choose per base estimator
+  * The model hyperparameters per base model
+* It is not clear how to evaluate the performance of a CATE estimator
+
+---
+## Performing a grid search
+
+```python
+gs = MetaLearnerGridSearch(
+    metalearner_factory=DRLearner,
+    metalearner_params={"is_classification": False, "n_variants": 2},
+    base_learner_grid={
+        "variant_outcome_model": [LinearRegression, LGBMRegressor],
+        "propensity_model": [LGBMClassifier, QuadraticDiscriminantAnalysis],
+        "treatment_model": [LGBMRegressor],
+    },
+    param_grid={
+        "variant_outcome_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
+        "treatment_model": {"LGBMRegressor": {"n_estimators": [1, 2]}},
+        "propensity_model": {"LGBMClassifier": {"n_estimators": [1, 2, 3]}},
+    },
+)
+gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
+```
+---
+
+TODO: Backup slide with optuna?
+
+---
+## SHAP values
+---
 ![width:400px](imgs/qr-metalearners.svg) ![width:400px](imgs/qr-presentation.svg)
 
 [github.com/QuantCo/metalearners](https://github.com/QuantCo/metalearners)
