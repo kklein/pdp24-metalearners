@@ -1,7 +1,7 @@
 [project]
 name = "pdp"
 channels = ["conda-forge"]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64", "linux-64", "osx-64"]
 
 [tasks]
 serve = "marp slides/slides.md --html --allow-local-files -w"
