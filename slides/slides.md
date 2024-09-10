@@ -225,7 +225,9 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 - Isolate the base models to evaluate them or to reuse them
 
 ---
+
 ## Accessing base models
+
 ```python
 from metalearners import RLearner
 from lightgbm import LGBMRegressor, LGBMClassifier
@@ -269,7 +271,8 @@ rlearner_new.fit(
 ```
 
 ---
-## Reusing base models accross different metalearners
+
+## Reusing base models across different metalearners
 
 ```python
 from metalearners import DRLearner
@@ -289,19 +292,21 @@ drlearner.fit(
     w=df[treatment_column],
 )
 ```
+
 ---
 
 ## Hyperparameter optimization
 
-* HPO can have massive impacts on the prediction quality in regular Machine Learning
-* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in metalearners
-* Three levels to optimize for:
-  * The MetaLearner architecture
-  * The model to choose per base estimator
-  * The model hyperparameters per base model
-* It is not clear how to evaluate the performance of a CATE estimator
+- HPO can have massive impacts on the prediction quality in regular Machine Learning
+- According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in metalearners
+- Three levels to optimize for:
+  - The MetaLearner architecture
+  - The model to choose per base estimator
+  - The model hyperparameters per base model
+- It is not clear how to evaluate the performance of a CATE estimator
 
 ---
+
 ## Performing a grid search
 
 ```python
@@ -321,13 +326,17 @@ gs = MetaLearnerGridSearch(
 )
 gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
 ```
+
 ---
 
 TODO: Backup slide with optuna?
 
 ---
+
 ## SHAP values
+
 ---
+
 ![width:400px](imgs/qr-metalearners.svg) ![width:400px](imgs/qr-presentation.svg)
 
 [github.com/QuantCo/metalearners](https://github.com/QuantCo/metalearners)
