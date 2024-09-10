@@ -297,13 +297,14 @@ drlearner.fit(
 
 ## Hyperparameter optimization
 
-- HPO can have massive impacts on the prediction quality in regular Machine Learning
-- According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in metalearners
-- Three levels to optimize for:
-  - The MetaLearner architecture
-  - The model to choose per base estimator
-  - The model hyperparameters per base model
-- It is not clear how to evaluate the performance of a CATE estimator
+<!-- prettier-ignore -->
+* HPO can have massive impacts on the prediction quality in regular Machine Learning
+* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in metalearners
+* Three levels to optimize for:
+  * The MetaLearner architecture
+  * The model to choose per base estimator
+  * The model hyperparameters per base model
+* It is not clear how to evaluate the performance of a CATE estimator
 
 ---
 
