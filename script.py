@@ -5,13 +5,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from git_root import git_root
+from lightgbm import LGBMClassifier, LGBMRegressor
 from matplotlib.patches import Patch
+from metalearners import RLearner
 from metalearners._utils import get_linear_dimension
 from metalearners.data_generation import (
     compute_experiment_outputs,
     generate_treatment,
 )
 from metalearners.outcome_functions import linear_treatment_effect
+from shap import TreeExplainer, summary_plot
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import minmax_scale
 
@@ -270,6 +273,34 @@ def ite_histograms(true_cate: np.ndarray) -> None:
     fig.savefig(results_dir() / "ites_classified.png")
 
 
+def fit_metalearner(covariates, treatments, observed_outcomes):
+    rlearner = RLearner(
+        nuisance_model_factory=LGBMRegressor,
+        propensity_model_factory=LGBMClassifier,
+        treatment_model_factory=LGBMRegressor,
+        nuisance_model_params={"verbose": -1},
+        treatment_model_params={"verbose": -1},
+        propensity_model_params={"verbose": -1},
+        is_classification=False,
+        n_variants=2,
+    )
+    rlearner.fit(
+        X=covariates,
+        y=observed_outcomes,
+        w=treatments,
+    )
+
+    return rlearner
+
+
+def shap_values(learner, covariates):
+    plt.clf()
+    explainer = learner.explainer()
+    shap_values = explainer.shap_values(covariates, TreeExplainer)
+    summary_plot(shap_values[0], features=covariates, show=False)
+    plt.savefig(results_dir() / "shap_values.png")
+
+
 if __name__ == "__main__":
     rng = np.random.default_rng(1337)
     (
@@ -311,3 +342,7 @@ if __name__ == "__main__":
     print(f"{ate_estimate_lin_reg=}")
 
     ite_histograms(true_cate)
+
+    rlearner = fit_metalearner(covariates, treatments, observed_outcomes)
+
+    shap_values(rlearner, covariates)

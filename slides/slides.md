@@ -228,10 +228,17 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 
 ## Accessing base models
 
+<div data-marpit-fragment>
+
 ```python
 from metalearners import RLearner
 from lightgbm import LGBMRegressor, LGBMClassifier
+```
 
+</div>
+<div data-marpit-fragment>
+
+```python
 rlearner = RLearner(
     nuisance_model_factory=LGBMRegressor,
     propensity_model_factory=LGBMClassifier,
@@ -239,22 +246,34 @@ rlearner = RLearner(
     is_classification=False,
     n_variants=2,
 )
-rlearner.fit(
-    X=df[feature_columns],
-    y=df[outcome_column],
-    w=df[treatment_column],
-)
+```
 
+</div>
+<div data-marpit-fragment>
+
+```python
+rlearner.fit(
+    X=df[feature_columns], y=df[outcome_column], w=df[treatment_column]
+)
 outcome_model = rlearner._nuisance_models["outcome_model"]
 ```
+
+</div>
 
 ---
 
 ## Reusing base models
 
+<div data-marpit-fragment>
+
 ```python
 from sklearn.linear_model import LinearRegression, LogisticRegression
+```
 
+</div>
+<div data-marpit-fragment>
+
+```python
 rlearner_new = RLearner(
     propensity_model_factory=LogisticRegression,
     treatment_model_factory=LinearRegression,
@@ -263,22 +282,35 @@ rlearner_new = RLearner(
     propensity_model_params={"max_iter": 500},
     n_variants=2,
 )
+```
+
+</div>
+<div data-marpit-fragment>
+
+```python
 rlearner_new.fit(
-    X=df[feature_columns],
-    y=df[outcome_column],
-    w=df[treatment_column],
+    X=df[feature_columns], y=df[outcome_column], w=df[treatment_column]
 )
 ```
+
+</div>
 
 ---
 
 ## Reusing base models across different metalearners
 
+<div data-marpit-fragment>
+
 ```python
 from metalearners import DRLearner
 
 trained_propensity_model = rlearner._nuisance_models["propensity_model"][0]
+```
 
+</div>
+<div data-marpit-fragment>
+
+```python
 drlearner = DRLearner(
     nuisance_model_factory=LGBMRegressor,
     treatment_model_factory=LGBMRegressor,
@@ -286,12 +318,18 @@ drlearner = DRLearner(
     is_classification=False,
     n_variants=2,
 )
+```
+
+</div>
+<div data-marpit-fragment>
+
+```python
 drlearner.fit(
-    X=df[feature_columns],
-    y=df[outcome_column],
-    w=df[treatment_column],
+    X=df[feature_columns], y=df[outcome_column], w=df[treatment_column]
 )
 ```
+
+</div>
 
 ---
 
@@ -335,6 +373,22 @@ TODO: Backup slide with optuna?
 ---
 
 ## SHAP values
+
+```python
+from shap import TreeExplainer, summary_plot
+explainer = learner.explainer()
+shap_values = explainer.shap_values(df[feature_columns], TreeExplainer)
+summary_plot(shap_values[0], features=df[feature_columns])
+```
+
+<style>
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+</style>
+
+![center](imgs/shap_values.png)
 
 ---
 
