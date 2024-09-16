@@ -272,9 +272,9 @@ img[alt~="center"] {
 
 ## Accessing base models
 
-![bg right 80%](imgs/modularity.drawio.svg)
+We can isolate the base models to evaluate them or to reuse them:
 
-- Isolate the base models to evaluate them or to reuse them
+![w:600 center](imgs/modularity.drawio.svg)
 
 <div data-marpit-fragment>
 
