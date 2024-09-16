@@ -225,10 +225,15 @@ def ate_lin_reg(
     return linear_regression.coef_[-1]
 
 
-def _ite_histogram(true_cate: np.ndarray, fontsize=FONTSIZE):
+def _ite_histogram(true_cate: np.ndarray, fontsize=FONTSIZE, predicted=False):
     fig, ax = plt.subplots(figsize=(10, 7))
     n, _, patches = ax.hist(true_cate, bins=20, color="grey")
-    ax.set_xlabel("$\\tau$: difference in happiness \n (treatment effect)")
+    if predicted:
+        ax.set_xlabel(
+            "$\\hat{\\tau}$: predicted difference in happiness \n (treatment effect)"
+        )
+    else:
+        ax.set_xlabel("$\\tau$: difference in happiness \n (treatment effect)")
 
     for item in (
         [
@@ -301,6 +306,22 @@ def shap_values(learner, covariates):
     plt.savefig(results_dir() / "shap_values.png")
 
 
+def predict_and_plot_cates(learner, covariates):
+    cates = learner.predict(covariates, is_oos=False)
+    fig, ax, n, patches = _ite_histogram(cates.squeeze(), predicted=True)
+    fig.tight_layout()
+    fig.savefig(results_dir() / "cates_hist.png")
+
+    fig, ax = plt.subplots(figsize=(10, 7))
+    ax.scatter(cates, true_cate, alpha=0.5)
+    ax.set_xlabel(
+        "$\\hat{\\tau}$: predicted difference in happiness \n (treatment effect)"
+    )
+    ax.set_ylabel("$\\tau$: difference in happiness \n (treatment effect)")
+    fig.tight_layout()
+    fig.savefig(results_dir() / "cates_vs_true_cates.png")
+
+
 if __name__ == "__main__":
     rng = np.random.default_rng(1337)
     (
@@ -344,5 +365,7 @@ if __name__ == "__main__":
     ite_histograms(true_cate)
 
     rlearner = fit_metalearner(covariates, treatments, observed_outcomes)
+
+    predict_and_plot_cates(rlearner, covariates)
 
     shap_values(rlearner, covariates)

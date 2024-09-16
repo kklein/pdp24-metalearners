@@ -218,15 +218,7 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 
 ---
 
-## Accessing base models
-
-![bg right 80%](imgs/modularity.drawio.svg)
-
-- Isolate the base models to evaluate them or to reuse them
-
----
-
-## Accessing base models
+## Creating a first MetaLearner
 
 <div data-marpit-fragment>
 
@@ -255,6 +247,38 @@ rlearner = RLearner(
 rlearner.fit(
     X=df[feature_columns], y=df[outcome_column], w=df[treatment_column]
 )
+```
+
+</div>
+
+---
+
+## Predicting with a MetaLearner
+
+```python
+rlearner.predict(df[feature_columns], is_oos=False)
+```
+
+<style>
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+</style>
+
+![w:650 center](imgs/cates_hist.png)
+
+---
+
+## Accessing base models
+
+![bg right 80%](imgs/modularity.drawio.svg)
+
+- Isolate the base models to evaluate them or to reuse them
+
+<div data-marpit-fragment>
+
+```python
 outcome_model = rlearner._nuisance_models["outcome_model"]
 ```
 
@@ -348,19 +372,25 @@ drlearner.fit(
 
 ## Performing a grid search
 
+![w:550 center](imgs/grid_search.svg)
+
+---
+
+## Performing a grid search
+
 ```python
 gs = MetaLearnerGridSearch(
-    metalearner_factory=DRLearner,
+    metalearner_factory=RLearner,
     metalearner_params={"is_classification": False, "n_variants": 2},
     base_learner_grid={
-        "variant_outcome_model": [LinearRegression, LGBMRegressor],
+        "outcome_model": [LinearRegression, LGBMRegressor],
         "propensity_model": [LGBMClassifier, QuadraticDiscriminantAnalysis],
         "treatment_model": [LGBMRegressor],
     },
     param_grid={
         "variant_outcome_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
-        "treatment_model": {"LGBMRegressor": {"n_estimators": [1, 2]}},
-        "propensity_model": {"LGBMClassifier": {"n_estimators": [1, 2, 3]}},
+        "treatment_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
+        "propensity_model": {"LGBMClassifier": {"n_estimators": [5, 20]}},
     },
 )
 gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
