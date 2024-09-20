@@ -398,10 +398,6 @@ gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
 
 ---
 
-TODO: Backup slide with optuna?
-
----
-
 ## SHAP values
 
 ```python
@@ -419,6 +415,13 @@ img[alt~="center"] {
 </style>
 
 ![center](imgs/shap_values.png)
+
+---
+
+## And much more...
+
+- Integrated with `optuna`, `lime`, `onnx`
+- Supports `pandas`, `numpy`, `scipy.sparse`
 
 ---
 
