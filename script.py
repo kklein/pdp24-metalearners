@@ -315,7 +315,7 @@ def predict_and_plot_cates(learner, covariates):
     fig, ax = plt.subplots(figsize=(10, 7))
     ax.scatter(cates, true_cate, alpha=0.5)
     ax.set_xlabel(
-        "$\\hat{\\tau}$: predicted difference in happiness \n (treatment effect)"
+        "$\\hat{\\tau}$: estimated difference in happiness \n (treatment effect)"
     )
     ax.set_ylabel("$\\tau$: difference in happiness \n (treatment effect)")
     fig.tight_layout()
