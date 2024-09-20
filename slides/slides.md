@@ -238,3 +238,17 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 A randomized control trial usually gives us the first two for free.
 
 For more information see e.g. [Athey and Imbens, 2016](https://arxiv.org/pdf/1607.00698.pdf).
+
+---
+
+## Python implementations of MetaLearners
+
+|                                           | `metalearners` | `causalml` | `econml` |
+| ----------------------------------------- | :------------: | :--------: | :------: |
+| MetaLearner implementations               |       ✔️       |     ✔️     |    ✔️    |
+| Support\* for `pandas`, `scipy`, `polars` |       ✔️       |     ❌     |    ❌    |
+| HPO integration                           |       ✔️       |     ❌     |    ❌    |
+| Concurrency across base models            |       ✔️       |     ❌     |    ❌    |
+| >2 treatment variants                     |       ✔️       |     ✔️     |    ❌    |
+| Classification\*                          |       ✔️       |     ❌     |    ✔️    |
+| Other Causal Inference methods            |       ❌       |     ✔️     |    ✔️    |
