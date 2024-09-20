@@ -230,7 +230,7 @@ def _ite_histogram(true_cate: np.ndarray, fontsize=FONTSIZE, predicted=False):
     n, _, patches = ax.hist(true_cate, bins=20, color="grey")
     if predicted:
         ax.set_xlabel(
-            "$\\hat{\\tau}$: predicted difference in happiness \n (treatment effect)"
+            "$\\hat{\\tau}$: estimated difference in happiness \n (treatment effect)"
         )
     else:
         ax.set_xlabel("$\\tau$: difference in happiness \n (treatment effect)")
