@@ -364,7 +364,7 @@ drlearner.fit(
 
 <!-- prettier-ignore -->
 * HPO can have massive impacts on the prediction quality in regular Machine Learning
-* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in metalearners
+* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in MetaLearners
 * Three levels to optimize for:
   * The MetaLearner architecture
   * The model to choose per base estimator
