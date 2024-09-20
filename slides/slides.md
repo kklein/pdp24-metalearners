@@ -2,7 +2,7 @@
 theme: base
 paginate: true
 header: "![w:50px](imgs/quantco.svg)"
-footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escofet [@fmartiescofet](https://twitter.com/fmartiescofet)
+footer: Francesc Martí Escofet [@fmartiescofet](https://twitter.com/fmartiescofet), Kevin Klein [@kevkle](https://twitter.com/kevkle)
 ---
 
 ![bg](imgs/monet-library.png)
@@ -14,6 +14,9 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 # CATEring to Causal Inference: An Introduction to `metalearners`
 
 ## Flexible MetaLearners in Python
+
+Francesc Martí Escofet (@fmartiescofet)
+Kevin Klein (@kevkle)
 
 ---
 
