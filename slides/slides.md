@@ -250,5 +250,5 @@ For more information see e.g. [Athey and Imbens, 2016](https://arxiv.org/pdf/160
 | HPO integration                           |       ✔️       |     ❌     |    ❌    |
 | Concurrency across base models            |       ✔️       |     ❌     |    ❌    |
 | >2 treatment variants                     |       ✔️       |     ✔️     |    ❌    |
-| Classification\*                          |       ✔️       |     ❌     |    ❌    |
+| Classification\*                          |       ✔️       |     ❌     |    ✔️    |
 | Other Causal Inference methods            |       ❌       |     ✔️     |    ✔️    |
