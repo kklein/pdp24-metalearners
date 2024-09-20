@@ -2,7 +2,7 @@
 theme: base
 paginate: true
 header: "![w:50px](imgs/quantco.svg)"
-footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escofet [@fmartiescofet](https://twitter.com/fmartiescofet)
+footer: Francesc Martí Escofet [@fmartiescofet](https://twitter.com/fmartiescofet), Kevin Klein [@kevkle](https://twitter.com/kevkle)
 ---
 
 ![bg](imgs/monet-library.png)
@@ -14,6 +14,9 @@ footer: Kevin Klein [@kevkle](https://twitter.com/kevkle), Francesc Martí Escof
 # CATEring to Causal Inference: An Introduction to `metalearners`
 
 ## Flexible MetaLearners in Python
+
+Francesc Martí Escofet (@fmartiescofet)
+Kevin Klein (@kevkle)
 
 ---
 
@@ -361,7 +364,7 @@ drlearner.fit(
 
 <!-- prettier-ignore -->
 * HPO can have massive impacts on the prediction quality in regular Machine Learning
-* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in metalearners
+* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in MetaLearners
 * Three levels to optimize for:
   * The MetaLearner architecture
   * The model to choose per base estimator
@@ -445,3 +448,17 @@ img[alt~="center"] {
 A randomized control trial usually gives us the first two for free.
 
 For more information see e.g. [Athey and Imbens, 2016](https://arxiv.org/pdf/1607.00698.pdf).
+
+---
+
+## Python implementations of MetaLearners
+
+|                                           | `metalearners` | `causalml` | `econml` |
+| ----------------------------------------- | :------------: | :--------: | :------: |
+| MetaLearner implementations               |       ✔️       |     ✔️     |    ✔️    |
+| Support\* for `pandas`, `scipy`, `polars` |       ✔️       |     ❌     |    ❌    |
+| HPO integration                           |       ✔️       |     ❌     |    ❌    |
+| Concurrency across base models            |       ✔️       |     ❌     |    ❌    |
+| >2 treatment variants                     |       ✔️       |     ✔️     |    ❌    |
+| Classification\*                          |       ✔️       |     ❌     |    ✔️    |
+| Other Causal Inference methods            |       ❌       |     ✔️     |    ✔️    |
