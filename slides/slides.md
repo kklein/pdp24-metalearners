@@ -221,6 +221,213 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 
 ---
 
+## Creating a first MetaLearner
+
+<div data-marpit-fragment>
+
+```python
+from metalearners import RLearner
+from lightgbm import LGBMRegressor, LGBMClassifier
+```
+
+</div>
+<div data-marpit-fragment>
+
+```python
+rlearner = RLearner(
+    nuisance_model_factory=LGBMRegressor,
+    propensity_model_factory=LGBMClassifier,
+    treatment_model_factory=LGBMRegressor,
+    is_classification=False,
+    n_variants=2,
+)
+```
+
+</div>
+<div data-marpit-fragment>
+
+```python
+rlearner.fit(
+    X=df[feature_columns], y=df[outcome_column], w=df[treatment_column]
+)
+```
+
+</div>
+
+---
+
+## Predicting with a MetaLearner
+
+```python
+rlearner.predict(df[feature_columns], is_oos=False)
+```
+
+<style>
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+</style>
+
+![w:650 center](imgs/cates_hist.png)
+
+---
+
+## Accessing base models
+
+We can isolate the base models to evaluate them or to reuse them:
+
+![w:600 center](imgs/modularity.drawio.svg)
+
+<div data-marpit-fragment>
+
+```python
+outcome_model = rlearner._nuisance_models["outcome_model"]
+```
+
+</div>
+
+---
+
+## Reusing base models
+
+<div data-marpit-fragment>
+
+```python
+from sklearn.linear_model import LinearRegression, LogisticRegression
+```
+
+</div>
+<div data-marpit-fragment>
+
+```python
+rlearner_new = RLearner(
+    propensity_model_factory=LogisticRegression,
+    treatment_model_factory=LinearRegression,
+    is_classification=False,
+    fitted_nuisance_models={"outcome_model": outcome_model},
+    propensity_model_params={"max_iter": 500},
+    n_variants=2,
+)
+```
+
+</div>
+<div data-marpit-fragment>
+
+```python
+rlearner_new.fit(
+    X=df[feature_columns], y=df[outcome_column], w=df[treatment_column]
+)
+```
+
+</div>
+
+---
+
+## Reusing base models across different metalearners
+
+<div data-marpit-fragment>
+
+```python
+from metalearners import DRLearner
+
+trained_propensity_model = rlearner._nuisance_models["propensity_model"][0]
+```
+
+</div>
+<div data-marpit-fragment>
+
+```python
+drlearner = DRLearner(
+    nuisance_model_factory=LGBMRegressor,
+    treatment_model_factory=LGBMRegressor,
+    fitted_propensity_model=trained_propensity_model,
+    is_classification=False,
+    n_variants=2,
+)
+```
+
+</div>
+<div data-marpit-fragment>
+
+```python
+drlearner.fit(
+    X=df[feature_columns], y=df[outcome_column], w=df[treatment_column]
+)
+```
+
+</div>
+
+---
+
+## Hyperparameter optimization
+
+<!-- prettier-ignore -->
+* HPO can have massive impacts on the prediction quality in regular Machine Learning
+* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in MetaLearners
+* Three levels to optimize for:
+  * The MetaLearner architecture
+  * The model to choose per base estimator
+  * The model hyperparameters per base model
+* It is not clear how to evaluate the performance of a CATE estimator
+
+---
+
+## Performing a grid search
+
+![w:550 center](imgs/grid_search.svg)
+
+---
+
+## Performing a grid search
+
+```python
+gs = MetaLearnerGridSearch(
+    metalearner_factory=RLearner,
+    metalearner_params={"is_classification": False, "n_variants": 2},
+    base_learner_grid={
+        "outcome_model": [LinearRegression, LGBMRegressor],
+        "propensity_model": [LGBMClassifier, QuadraticDiscriminantAnalysis],
+        "treatment_model": [LGBMRegressor],
+    },
+    param_grid={
+        "variant_outcome_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
+        "treatment_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
+        "propensity_model": {"LGBMClassifier": {"n_estimators": [5, 20]}},
+    },
+)
+gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
+```
+
+---
+
+## SHAP values
+
+```python
+from shap import TreeExplainer, summary_plot
+explainer = learner.explainer()
+shap_values = explainer.shap_values(df[feature_columns], TreeExplainer)
+summary_plot(shap_values[0], features=df[feature_columns])
+```
+
+<style>
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+</style>
+
+![center](imgs/shap_values.png)
+
+---
+
+## And much more...
+
+- Integrated with `optuna`, `lime`, `onnx`
+- Supports `pandas`, `numpy`, `scipy.sparse`
+
+---
+
 ![width:400px](imgs/qr-metalearners.svg) ![width:400px](imgs/qr-presentation.svg)
 
 [github.com/QuantCo/metalearners](https://github.com/QuantCo/metalearners)

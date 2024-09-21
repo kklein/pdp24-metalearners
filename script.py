@@ -5,13 +5,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from git_root import git_root
+from lightgbm import LGBMClassifier, LGBMRegressor
 from matplotlib.patches import Patch
+from metalearners import RLearner
 from metalearners._utils import get_linear_dimension
 from metalearners.data_generation import (
     compute_experiment_outputs,
     generate_treatment,
 )
 from metalearners.outcome_functions import linear_treatment_effect
+from shap import TreeExplainer, summary_plot
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import minmax_scale
 
@@ -222,10 +225,15 @@ def ate_lin_reg(
     return linear_regression.coef_[-1]
 
 
-def _ite_histogram(true_cate: np.ndarray, fontsize=FONTSIZE):
+def _ite_histogram(true_cate: np.ndarray, fontsize=FONTSIZE, predicted=False):
     fig, ax = plt.subplots(figsize=(10, 7))
     n, _, patches = ax.hist(true_cate, bins=20, color="grey")
-    ax.set_xlabel("$\\tau$: difference in happiness \n (treatment effect)")
+    if predicted:
+        ax.set_xlabel(
+            "$\\hat{\\tau}$: estimated difference in happiness \n (treatment effect)"
+        )
+    else:
+        ax.set_xlabel("$\\tau$: difference in happiness \n (treatment effect)")
 
     for item in (
         [
@@ -270,6 +278,50 @@ def ite_histograms(true_cate: np.ndarray) -> None:
     fig.savefig(results_dir() / "ites_classified.png")
 
 
+def fit_metalearner(covariates, treatments, observed_outcomes):
+    rlearner = RLearner(
+        nuisance_model_factory=LGBMRegressor,
+        propensity_model_factory=LGBMClassifier,
+        treatment_model_factory=LGBMRegressor,
+        nuisance_model_params={"verbose": -1},
+        treatment_model_params={"verbose": -1},
+        propensity_model_params={"verbose": -1},
+        is_classification=False,
+        n_variants=2,
+    )
+    rlearner.fit(
+        X=covariates,
+        y=observed_outcomes,
+        w=treatments,
+    )
+
+    return rlearner
+
+
+def shap_values(learner, covariates):
+    plt.clf()
+    explainer = learner.explainer()
+    shap_values = explainer.shap_values(covariates, TreeExplainer)
+    summary_plot(shap_values[0], features=covariates, show=False)
+    plt.savefig(results_dir() / "shap_values.png")
+
+
+def predict_and_plot_cates(learner, covariates):
+    cates = learner.predict(covariates, is_oos=False)
+    fig, ax, n, patches = _ite_histogram(cates.squeeze(), predicted=True)
+    fig.tight_layout()
+    fig.savefig(results_dir() / "cates_hist.png")
+
+    fig, ax = plt.subplots(figsize=(10, 7))
+    ax.scatter(cates, true_cate, alpha=0.5)
+    ax.set_xlabel(
+        "$\\hat{\\tau}$: estimated difference in happiness \n (treatment effect)"
+    )
+    ax.set_ylabel("$\\tau$: difference in happiness \n (treatment effect)")
+    fig.tight_layout()
+    fig.savefig(results_dir() / "cates_vs_true_cates.png")
+
+
 if __name__ == "__main__":
     rng = np.random.default_rng(1337)
     (
@@ -311,3 +363,9 @@ if __name__ == "__main__":
     print(f"{ate_estimate_lin_reg=}")
 
     ite_histograms(true_cate)
+
+    rlearner = fit_metalearner(covariates, treatments, observed_outcomes)
+
+    predict_and_plot_cates(rlearner, covariates)
+
+    shap_values(rlearner, covariates)
