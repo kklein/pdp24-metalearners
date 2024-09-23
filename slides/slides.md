@@ -436,6 +436,26 @@ img[alt~="center"] {
 
 ---
 
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+# Would you also like to work on such topics?
+
+Join us!
+https://www.quantco.com/
+
+![bg left 70%](imgs/quantco_black.png)
+
+---
+
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+![bg 90%](imgs/jobs-dl-eng.png)
+![bg 90%](imgs/jobs-ds.png)
+
+---
+
 # Backup
 
 ---
