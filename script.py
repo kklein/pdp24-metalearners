@@ -1,6 +1,7 @@
 from functools import cache
 from pathlib import Path
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -302,7 +303,9 @@ def shap_values(learner, covariates):
     plt.clf()
     explainer = learner.explainer()
     shap_values = explainer.shap_values(covariates, TreeExplainer)
-    summary_plot(shap_values[0], features=covariates, show=False)
+    summary_plot(
+        shap_values[0], features=covariates, show=False, cmap=mpl.colormaps["copper"]
+    )
     plt.savefig(results_dir() / "shap_values.png")
 
 
