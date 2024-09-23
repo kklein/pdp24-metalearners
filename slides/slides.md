@@ -211,15 +211,48 @@ from lightgbm import LGBMRegressor, LGBMClassifier
 </div>
 <div data-marpit-fragment>
 
+<marp-pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">rlearner = RLearner(
+<span style="color:orange">&nbsp;&nbsp;&nbsp;&nbsp;nuisance_model_factory=LGBMRegressor,
+&nbsp;&nbsp;&nbsp;&nbsp;propensity_model_factory=LGBMClassifier,
+&nbsp;&nbsp;&nbsp;&nbsp;treatment_model_factory=LGBMRegressor,</span>
+&nbsp;&nbsp;&nbsp;&nbsp;is_classification=<span class="hljs-literal">False</span>,
+&nbsp;&nbsp;&nbsp;&nbsp;n_variants=<span class="hljs-number">2</span>,
+)
+</code></marp-pre>
+
+</div>
+<div style="visibility: hidden">
+
 ```python
-rlearner = RLearner(
-    nuisance_model_factory=LGBMRegressor,
-    propensity_model_factory=LGBMClassifier,
-    treatment_model_factory=LGBMRegressor,
-    is_classification=False,
-    n_variants=2,
+rlearner.fit(
+    X=df[feature_columns], y=df[outcome_column], w=df[treatment_column]
 )
 ```
+
+</div>
+
+---
+
+## Creating a first MetaLearner
+
+<div>
+
+```python
+from metalearners import RLearner
+from lightgbm import LGBMRegressor, LGBMClassifier
+```
+
+</div>
+<div>
+
+<marp-pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">rlearner = RLearner(
+&nbsp;&nbsp;&nbsp;&nbsp;nuisance_model_factory=LGBMRegressor,
+&nbsp;&nbsp;&nbsp;&nbsp;propensity_model_factory=LGBMClassifier,
+&nbsp;&nbsp;&nbsp;&nbsp;treatment_model_factory=LGBMRegressor,
+<span style="color:orange">&nbsp;&nbsp;&nbsp;&nbsp;is_classification=<span class="hljs-literal">False</span>,
+&nbsp;&nbsp;&nbsp;&nbsp;n_variants=<span class="hljs-number">2</span>,</span>
+)
+</code></marp-pre>
 
 </div>
 <div data-marpit-fragment>
@@ -278,16 +311,15 @@ from sklearn.linear_model import LinearRegression, LogisticRegression
 </div>
 <div data-marpit-fragment>
 
-```python
-rlearner_new = RLearner(
-    propensity_model_factory=LogisticRegression,
-    treatment_model_factory=LinearRegression,
-    is_classification=False,
-    fitted_nuisance_models={"outcome_model": outcome_model},
-    propensity_model_params={"max_iter": 500},
-    n_variants=2,
+<marp-pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">rlearner_new = RLearner(
+&nbsp;&nbsp;&nbsp;&nbsp;propensity_model_factory=LogisticRegression,
+&nbsp;&nbsp;&nbsp;&nbsp;treatment_model_factory=LinearRegression,
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:orange">fitted_nuisance_models={<span class="hljs-string">"outcome_model"</span>: outcome_model},</span>
+&nbsp;&nbsp;&nbsp;&nbsp;is_classification=<span class="hljs-literal">False</span>,
+&nbsp;&nbsp;&nbsp;&nbsp;propensity_model_params={<span class="hljs-string">"max_iter"</span>: <span class="hljs-number">500</span>},
+&nbsp;&nbsp;&nbsp;&nbsp;n_variants=<span class="hljs-number">2</span>,
 )
-```
+</code></marp-pre>
 
 </div>
 <div data-marpit-fragment>
@@ -302,7 +334,7 @@ rlearner_new.fit(
 
 ---
 
-## Reusing base models across different metalearners
+## Reusing base models across different MetaLearners
 
 <div data-marpit-fragment>
 
@@ -315,15 +347,14 @@ trained_propensity_model = rlearner._nuisance_models["propensity_model"][0]
 </div>
 <div data-marpit-fragment>
 
-```python
-drlearner = DRLearner(
-    nuisance_model_factory=LGBMRegressor,
-    treatment_model_factory=LGBMRegressor,
-    fitted_propensity_model=trained_propensity_model,
-    is_classification=False,
-    n_variants=2,
+<marp-pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">drlearner = DRLearner(
+&nbsp;&nbsp;&nbsp;&nbsp;nuisance_model_factory=LGBMRegressor,
+&nbsp;&nbsp;&nbsp;&nbsp;treatment_model_factory=LGBMRegressor,
+<span style="color:orange">&nbsp;&nbsp;&nbsp;&nbsp;fitted_propensity_model=trained_propensity_model,</span>
+&nbsp;&nbsp;&nbsp;&nbsp;is_classification=<span class="hljs-literal">False</span>,
+&nbsp;&nbsp;&nbsp;&nbsp;n_variants=<span class="hljs-number">2</span>,
 )
-```
+</code></marp-pre>
 
 </div>
 <div data-marpit-fragment>
