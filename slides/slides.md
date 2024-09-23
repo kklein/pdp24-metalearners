@@ -395,6 +395,13 @@ gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
 
 ---
 
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+![bg 100%](imgs/monet-blackbox.png)
+
+---
+
 ## SHAP values
 
 ```python
