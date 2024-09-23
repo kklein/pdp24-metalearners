@@ -117,11 +117,11 @@ $$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})]$$
 
 ---
 
-![](imgs/ites_plain.png)
+![w:850 center](imgs/ites_plain.png)
 
 ---
 
-![](imgs/ites_classified.png)
+![w:850 center](imgs/ites_classified.png)
 
 ---
 
