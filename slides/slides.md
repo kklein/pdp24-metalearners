@@ -29,29 +29,6 @@ Kevin Klein (@kevkle)
 
 ---
 
-<!-- _footer: ''-->
-<!-- _header: ''-->
-
-![bg 50%](imgs/fight-1.jpeg)
-
----
-
-<!-- _paginate: skip -->
-<!-- _footer: ''-->
-<!-- _header: ''-->
-
-![bg 50%](imgs/fight-2.jpeg)
-
----
-
-<!-- _paginate: skip -->
-<!-- _footer: ''-->
-<!-- _header: ''-->
-
-![bg 50%](imgs/fight-3.jpeg)
-
----
-
 ## Let the data decide!
 
 - We not only want to predict what happens in a world in which we don't have influence on the environment/data generating process.
@@ -77,11 +54,11 @@ Kevin Klein (@kevkle)
 
 Our experiment data contains three different kinds of quantities per individual $i$:
 
-| Name         | Symbol | Definition                                                                     |
-| ------------ | ------ | ------------------------------------------------------------------------------ |
-| Covariates   | $X_i$  | Properties of the time of intervention                                         |
-| Intervention | $W_i$  | $=\begin{cases} 1 & \text{if red pill} \\ 0 & \text{if blue pill} \end{cases}$ |
-| Outcome      | $Y_i$  | Happiness score ($\mathbb{R}$) 5 years after intervention                      |
+| Name         | Symbol | Definition                                                                    |
+| ------------ | ------ | ----------------------------------------------------------------------------- |
+| Covariates   | $X_i$  | Properties of the time of intervention                                        |
+| Intervention | $W_i$  | $\begin{cases} 1 & \text{if red pill} \\ 0 & \text{if blue pill} \end{cases}$ |
+| Outcome      | $Y_i$  | Happiness score ($\mathbb{R}$) 5 years after intervention                     |
 
 $\mathcal{D} = \{ (X_i, W_i, Y_i)\}$
 
