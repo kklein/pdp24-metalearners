@@ -11,6 +11,8 @@ footer: Francesc Martí Escofet [@fmartiescofet](https://twitter.com/fmartiescof
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
+<!-- _paginate: skip -->
+
 # CATEring to Causal Inference: An Introduction to `metalearners`
 
 ## Flexible MetaLearners in Python
@@ -23,31 +25,30 @@ Kevin Klein (@kevkle)
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-![bg 100%](imgs/monet-morpheus-wide.png)
+![bg 105%](imgs/monet-morpheus-wide-cropped.png)
 
 ---
-
-<!--
-'The unexamined life is not worth living' - Socrates (~400 BC)
-'Ignorance is Bliss' - Thomas Gray (1742) / Publilius Syrus (43 BC)
--->
 
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-![bg 40%](imgs/fight.jpg)
+![bg 50%](imgs/fight-1.jpeg)
 
 ---
 
-<!--
-'The unexamined life is not worth living' - Socrates (~400 BC)
-'Ignorance is Bliss' - Thomas Gray (1742) / Publilius Syrus (43 BC)
--->
-
+<!-- _paginate: skip -->
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-![bg 40%](imgs/fight_2.jpg)
+![bg 50%](imgs/fight-2.jpeg)
+
+---
+
+<!-- _paginate: skip -->
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+![bg 50%](imgs/fight-3.jpeg)
 
 ---
 
