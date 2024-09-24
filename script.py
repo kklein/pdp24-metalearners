@@ -1,6 +1,7 @@
 from functools import cache
 from pathlib import Path
 
+import graphviz
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -387,7 +388,44 @@ def predict_and_plot_outcomes(learner, covariates, outcomes, suffix=""):
     fig.savefig(results_dir() / f"outcomes_vs_true_outcomes{suffix}.png")
 
 
+def plot_dgp_dag() -> None:
+    """Generate directed acyclic graph describing data generating process."""
+    dot = graphviz.Digraph(
+        "dgp",
+        comment="Data Generating Process",
+        format="svg",
+        directory=results_dir(),
+    )
+
+    # Covariates
+    dot.node("age", "Age")
+    dot.node("phil_books", "#Philosophy books")
+    dot.node("personality", "Personality trait")
+    dot.node("education", "Education")
+    dot.node("atheist", "Atheist")
+
+    dot.node("pill", "Pill", style="dotted")
+    dot.node("happiness", "Happiness")
+
+    dot.edge("age", "phil_books")
+    dot.edge("age", "education")
+    dot.edge("age", "atheist")
+
+    dot.edge("age", "pill")
+
+    dot.edge("age", "happiness")
+    dot.edge("phil_books", "happiness")
+    dot.edge("personality", "happiness")
+    dot.edge("education", "happiness")
+    dot.edge("atheist", "happiness")
+
+    dot.edge("pill", "happiness")
+    dot.render()
+
+
 if __name__ == "__main__":
+    # plot_dgp_dag()
+
     rng = np.random.default_rng(1337)
     (
         covariates,

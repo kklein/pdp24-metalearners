@@ -541,6 +541,15 @@ Join us!
 
 ---
 
+## Dataset
+
+- #Observations: 10,000
+- Share of blue pill: 49%
+- $\rho_{\text{age}, p(W|X)}$: 1
+- DGP: ![w:500 center](imgs/dgp.gv.svg)
+
+---
+
 ## Estimation quality
 
 ![w:500 center](imgs/cates_vs_true_cates.png)
