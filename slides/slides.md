@@ -491,6 +491,16 @@ img[alt~="center"] {
 
 - Integrated with `optuna`, `lime`, `onnx`
 - Supports `pandas`, `numpy`, `scipy.sparse`
+  - `polars` in the next release
+
+---
+
+| The Matrix      | Blue Pill                  | Red Pill                           |
+| --------------- | -------------------------- | ---------------------------------- |
+| Marketing       | Gets a voucher             | Doesn't get a voucher              |
+| Education       | Teaching w/ tablet         | Teaching /wo tablet                |
+| Medicine        | Radiotherapy               | Chemotherapy                       |
+| Fraud detection | Human looks at transaction | Transaction automatically approved |
 
 ---
 
