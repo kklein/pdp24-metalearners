@@ -42,8 +42,8 @@ Kevin Klein (@kevkle)
 
 ## The data
 
-- We have empirical **data** on individuals, who have
-
+- We conducted an empirical experiment to gather data.
+- This empirical **data** on individuals, who have
   - had their **properties**/covariates evaluated at the time of the intervention
   - been subject to the **intervention** (taking either of both pills)
   - had the **outcome** of their happiness measured, 5 years after the intervention
