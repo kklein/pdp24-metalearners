@@ -42,8 +42,8 @@ Kevin Klein (@kevkle)
 
 ## The data
 
-- We have empirical **data** on individuals, who have
-
+- We conducted an empirical experiment to gather data.
+- This empirical **data** on individuals, who have
   - had their **properties**/covariates evaluated at the time of the intervention
   - been subject to the **intervention** (taking either of both pills)
   - had the **outcome** of their happiness measured, 5 years after the intervention
@@ -57,7 +57,7 @@ Our experiment data contains three different kinds of quantities per individual 
 | Name         | Symbol | Definition                                                                    |
 | ------------ | ------ | ----------------------------------------------------------------------------- |
 | Covariates   | $X_i$  | Properties of the time of intervention                                        |
-| Intervention | $W_i$  | $\begin{cases} 1 & \text{if red pill} \\ 0 & \text{if blue pill} \end{cases}$ |
+| Intervention | $W_i$  | $\begin{cases} 1 & \text{if blue pill} \\ 0 & \text{if red pill} \end{cases}$ |
 | Outcome      | $Y_i$  | Happiness score ($\mathbb{R}$) 5 years after intervention                     |
 
 $\mathcal{D} = \{ (X_i, W_i, Y_i)\}$
@@ -494,9 +494,15 @@ img[alt~="center"] {
 
 ---
 
-![width:400px](imgs/qr-metalearners.svg) ![width:400px](imgs/qr-presentation.svg)
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+![bg left 90%](imgs/qr-metalearners.svg) ![bg left 90%](imgs/qr-presentation.svg)
+
+## Please leave feedback on GitHub! :)
 
 [github.com/QuantCo/metalearners](https://github.com/QuantCo/metalearners)
+
 [github.com/kklein/pdp24-metalearners](https://github.com/kklein/pdp24-metalearners)
 
 ---
@@ -504,10 +510,10 @@ img[alt~="center"] {
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-# Would you also like to work on such topics?
+## Would you like to work on such topics, too?
 
 Join us!
-https://www.quantco.com/
+[quantco.com](https://www.quantco.com)
 
 ![bg left 70%](imgs/quantco_black.png)
 
@@ -522,6 +528,12 @@ https://www.quantco.com/
 ---
 
 # Backup
+
+---
+
+## Estimation quality
+
+![w:500 center](imgs/cates_vs_true_cates.png)
 
 ---
 
