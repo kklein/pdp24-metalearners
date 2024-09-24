@@ -299,6 +299,26 @@ def fit_metalearner(covariates, treatments, observed_outcomes):
     return rlearner
 
 
+def fit_underfitting_metalearner(covariates, treatments, observed_outcomes):
+    rlearner = RLearner(
+        nuisance_model_factory=LGBMRegressor,
+        propensity_model_factory=LGBMClassifier,
+        treatment_model_factory=LGBMRegressor,
+        nuisance_model_params={"verbose": -1, "n_estimators": 1, "max_depth": 2},
+        treatment_model_params={"verbose": -1},
+        propensity_model_params={"verbose": -1},
+        is_classification=False,
+        n_variants=2,
+    )
+    rlearner.fit(
+        X=covariates,
+        y=observed_outcomes,
+        w=treatments,
+    )
+
+    return rlearner
+
+
 def shap_values(learner, covariates):
     plt.clf()
     explainer = learner.explainer()
@@ -309,11 +329,12 @@ def shap_values(learner, covariates):
     plt.savefig(results_dir() / "shap_values.png")
 
 
-def predict_and_plot_cates(learner, covariates, true_cate):
+def predict_and_plot_cates(learner, covariates, true_cate, name=None):
     cates = learner.predict(covariates, is_oos=False)
     fig, ax, n, patches = _ite_histogram(cates.squeeze(), predicted=True)
     fig.tight_layout()
-    fig.savefig(results_dir() / "cates_hist.png")
+    name = name or "cates_hist.png"
+    fig.savefig(results_dir() / name)
 
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.scatter(cates, true_cate, alpha=0.5)
@@ -338,6 +359,32 @@ def predict_and_plot_cates(learner, covariates, true_cate):
         item.set_fontsize(FONTSIZE)
     fig.tight_layout()
     fig.savefig(results_dir() / "cates_vs_true_cates.png")
+
+
+def predict_and_plot_outcomes(learner, covariates, outcomes, suffix=""):
+    outcome_model = learner._nuisance_models["outcome_model"][0]
+    predictions = outcome_model.predict(covariates, is_oos=False)
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.scatter(predictions, outcomes)
+    ax.set_xlabel("$\\hat{y}$: predicted happiness")
+    ax.set_ylabel("$y$: true happiness")
+    x_min = min(np.min(outcomes), np.min(predictions))
+    x_max = max(np.max(outcomes), np.max(predictions))
+    ax.set_xlim([x_min, x_max])  # type: ignore
+    ax.set_ylim([x_min, x_max])  # type: ignore
+    for item in (
+        [
+            ax.title,
+            ax.xaxis.label,
+            ax.yaxis.label,
+        ]
+        + ax.get_xticklabels()
+        + ax.get_yticklabels()
+    ):
+        item.set_fontsize(FONTSIZE)
+    ax.plot([x_min, x_max], [x_min, x_max])
+    fig.tight_layout()
+    fig.savefig(results_dir() / f"outcomes_vs_true_outcomes{suffix}.png")
 
 
 if __name__ == "__main__":
@@ -385,5 +432,17 @@ if __name__ == "__main__":
     rlearner = fit_metalearner(covariates, treatments, observed_outcomes)
 
     predict_and_plot_cates(rlearner, covariates, true_cate)
+    predict_and_plot_outcomes(rlearner, covariates, observed_outcomes)
 
     shap_values(rlearner, covariates)
+
+    rlearner_underfitted = fit_underfitting_metalearner(
+        covariates, treatments, observed_outcomes
+    )
+
+    predict_and_plot_cates(
+        rlearner_underfitted, covariates, "cates_hist_underfitted.png"
+    )
+    predict_and_plot_outcomes(
+        rlearner_underfitted, covariates, observed_outcomes, suffix="_underfitted"
+    )
