@@ -57,7 +57,7 @@ Our experiment data contains three different kinds of quantities per individual 
 | Name         | Symbol | Definition                                                                    |
 | ------------ | ------ | ----------------------------------------------------------------------------- |
 | Covariates   | $X_i$  | Properties of the time of intervention                                        |
-| Intervention | $W_i$  | $\begin{cases} 1 & \text{if red pill} \\ 0 & \text{if blue pill} \end{cases}$ |
+| Intervention | $W_i$  | $\begin{cases} 1 & \text{if blue pill} \\ 0 & \text{if red pill} \end{cases}$ |
 | Outcome      | $Y_i$  | Happiness score ($\mathbb{R}$) 5 years after intervention                     |
 
 $\mathcal{D} = \{ (X_i, W_i, Y_i)\}$
