@@ -309,18 +309,33 @@ def shap_values(learner, covariates):
     plt.savefig(results_dir() / "shap_values.png")
 
 
-def predict_and_plot_cates(learner, covariates):
+def predict_and_plot_cates(learner, covariates, true_cate):
     cates = learner.predict(covariates, is_oos=False)
     fig, ax, n, patches = _ite_histogram(cates.squeeze(), predicted=True)
     fig.tight_layout()
     fig.savefig(results_dir() / "cates_hist.png")
 
-    fig, ax = plt.subplots(figsize=(10, 7))
+    fig, ax = plt.subplots(figsize=(10, 10))
     ax.scatter(cates, true_cate, alpha=0.5)
     ax.set_xlabel(
         "$\\hat{\\tau}$: estimated difference in happiness \n (treatment effect)"
     )
     ax.set_ylabel("$\\tau$: difference in happiness \n (treatment effect)")
+    x_min = min(np.min(true_cate), np.min(cates))
+    x_max = max(np.max(true_cate), np.max(cates))
+    ax.set_xlim([x_min, x_max])  # type: ignore
+    ax.set_ylim([x_min, x_max])  # type: ignore
+    ax.plot([x_min, x_max], [x_min, x_max])
+    for item in (
+        [
+            ax.title,
+            ax.xaxis.label,
+            ax.yaxis.label,
+        ]
+        + ax.get_xticklabels()
+        + ax.get_yticklabels()
+    ):
+        item.set_fontsize(FONTSIZE)
     fig.tight_layout()
     fig.savefig(results_dir() / "cates_vs_true_cates.png")
 
@@ -369,6 +384,6 @@ if __name__ == "__main__":
 
     rlearner = fit_metalearner(covariates, treatments, observed_outcomes)
 
-    predict_and_plot_cates(rlearner, covariates)
+    predict_and_plot_cates(rlearner, covariates, true_cate)
 
     shap_values(rlearner, covariates)

@@ -490,6 +490,12 @@ Join us!
 
 ---
 
+## Estimation quality
+
+![w:500 center](imgs/cates_vs_true_cates.png)
+
+---
+
 ## Conventional assumptions for estimating CATEs
 
 - Positivity/overlap
