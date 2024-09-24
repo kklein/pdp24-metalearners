@@ -378,7 +378,7 @@ gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
 
 ## (Naïve) Exploration is expensive
 
-![bg left 80%](imgs/grid_search-big.drawio.svg)
+![bg right 80%](imgs/grid_search-big.drawio.svg)
 
 Reuse of **mutually independent base models** could get the number of
 these base model `fit` calls from
