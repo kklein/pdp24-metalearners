@@ -284,9 +284,15 @@ img[alt~="center"] {
 
 ---
 
+## But what if?
+
+![w:650 center](imgs/cates_hist_underfitted.png)
+
+---
+
 ## Accessing base models
 
-We can isolate the base models to evaluate them or to reuse them:
+Thanks to the modular design of `metalearners`, we can conveniently isolate the base models to evaluate them:
 
 ![w:600 center](imgs/modularity.drawio.svg)
 
@@ -294,9 +300,94 @@ We can isolate the base models to evaluate them or to reuse them:
 
 ```python
 outcome_model = rlearner._nuisance_models["outcome_model"]
+outcome_estimates = outcome_model.predict(X, is_oos=False)
 ```
 
 </div>
+
+---
+
+## Problem: From CATE model to base model
+
+![w:500](imgs/cates_hist_underfitted.png) ![w:500](imgs/outcomes_vs_true_outcomes_underfitted.png)
+
+---
+
+## Solution: From base model to CATE model
+
+![w:500](imgs/outcomes_vs_true_outcomes.png) ![w:500](imgs/cates_hist.png)
+
+---
+
+## Hyperparameter optimization
+
+<!-- prettier-ignore -->
+* HPO can have massive impacts on the prediction quality in regular Machine Learning
+* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in MetaLearners
+* Three levels to optimize for:
+  * The MetaLearner architecture
+  * The model to choose per base estimator
+  * The model hyperparameters per base model
+* It is not clear how to evaluate the performance of a CATE estimator
+
+---
+
+## Performing a grid search
+
+![w:550 center](imgs/grid_search-1.drawio.svg)
+
+---
+
+<!-- _paginate: skip -->
+
+## Performing a grid search
+
+![w:550 center](imgs/grid_search-2.drawio.svg)
+
+---
+
+<!-- _paginate: skip -->
+
+## Performing a grid search
+
+![w:550 center](imgs/grid_search-3.drawio.svg)
+
+---
+
+## Performing a grid search
+
+```python
+gs = MetaLearnerGridSearch(
+    metalearner_factory=RLearner,
+    metalearner_params={"is_classification": False, "n_variants": 2},
+    base_learner_grid={
+        "outcome_model": [LinearRegression, LGBMRegressor],
+        "propensity_model": [LGBMClassifier, QuadraticDiscriminantAnalysis],
+        "treatment_model": [LGBMRegressor],
+    },
+    param_grid={
+        "variant_outcome_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
+        "treatment_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
+        "propensity_model": {"LGBMClassifier": {"n_estimators": [5, 20]}},
+    },
+)
+gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
+```
+
+---
+
+## (Naïve) Exploration is expensive
+
+![bg left 80%](imgs/grid_search-big.drawio.svg)
+
+Reuse of **mutually independent base models** could get the number of
+these base model `fit` calls from
+
+$$ \Theta(\#leaves(top) \cdot \#leaves(bottom)) $$
+
+down to
+
+$$ \Theta(\#leaves(top) + \#leaves(bottom)) $$
 
 ---
 
@@ -366,63 +457,6 @@ drlearner.fit(
 ```
 
 </div>
-
----
-
-## Hyperparameter optimization
-
-<!-- prettier-ignore -->
-* HPO can have massive impacts on the prediction quality in regular Machine Learning
-* According to [Machlanski et. al (2023)](https://arxiv.org/abs/2303.01412) this also happens in MetaLearners
-* Three levels to optimize for:
-  * The MetaLearner architecture
-  * The model to choose per base estimator
-  * The model hyperparameters per base model
-* It is not clear how to evaluate the performance of a CATE estimator
-
----
-
-## Performing a grid search
-
-![w:550 center](imgs/grid_search-1.drawio.svg)
-
----
-
-<!-- _paginate: skip -->
-
-## Performing a grid search
-
-![w:550 center](imgs/grid_search-2.drawio.svg)
-
----
-
-<!-- _paginate: skip -->
-
-## Performing a grid search
-
-![w:550 center](imgs/grid_search-3.drawio.svg)
-
----
-
-## Performing a grid search
-
-```python
-gs = MetaLearnerGridSearch(
-    metalearner_factory=RLearner,
-    metalearner_params={"is_classification": False, "n_variants": 2},
-    base_learner_grid={
-        "outcome_model": [LinearRegression, LGBMRegressor],
-        "propensity_model": [LGBMClassifier, QuadraticDiscriminantAnalysis],
-        "treatment_model": [LGBMRegressor],
-    },
-    param_grid={
-        "variant_outcome_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
-        "treatment_model": {"LGBMRegressor": {"n_estimators": [3, 5]}},
-        "propensity_model": {"LGBMClassifier": {"n_estimators": [5, 20]}},
-    },
-)
-gs.fit(X_train, y_train, w_train, X_validation, y_validation, w_validation)
-```
 
 ---
 
