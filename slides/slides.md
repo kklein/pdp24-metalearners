@@ -453,9 +453,15 @@ img[alt~="center"] {
 
 ---
 
-![width:400px](imgs/qr-metalearners.svg) ![width:400px](imgs/qr-presentation.svg)
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+![bg left 90%](imgs/qr-metalearners.svg) ![bg left 90%](imgs/qr-presentation.svg)
+
+## Please leave feedback on GitHub! :)
 
 [github.com/QuantCo/metalearners](https://github.com/QuantCo/metalearners)
+
 [github.com/kklein/pdp24-metalearners](https://github.com/kklein/pdp24-metalearners)
 
 ---
@@ -463,10 +469,10 @@ img[alt~="center"] {
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-# Would you also like to work on such topics?
+## Would you like to work on such topics, too?
 
 Join us!
-https://www.quantco.com/
+[quantco.com](https://www.quantco.com)
 
 ![bg left 70%](imgs/quantco_black.png)
 
