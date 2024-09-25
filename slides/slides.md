@@ -514,7 +514,7 @@ img[alt~="center"] {
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
-![bg left 90%](imgs/qr-metalearners.svg) ![bg left 90%](imgs/qr-presentation.svg)
+![bg left 80%](imgs/qr-metalearners.svg)
 
 ## Please leave feedback on GitHub! :)
 
