@@ -29,6 +29,7 @@ Kevin Klein (@kevkle)
 
 ---
 
+<!-- prettier-ignore -->
 ## Let the data decide!
 
 - We not only want to predict what happens in a world in which we don't have influence on the environment/data generating process.
@@ -37,9 +38,11 @@ Kevin Klein (@kevkle)
 
 - Intuitively, in order to decide, we'd like to **compare the 'outcomes'** if taking the blue pill compared to the outcome of taking the red pill.
   $$Y(\text{blue pill}) - Y(\text{red pill})$$
+  - This is a **causal** problem
 
 ---
 
+<!-- prettier-ignore -->
 ## The data
 
 - We conducted an empirical experiment to gather data.
@@ -150,11 +153,12 @@ The **fundamental problem of Causal Inference** states that we can never observe
 
 ## What now?
 
-- We can't know the Individual Treatment Effect (ITE)
+<!-- prettier-ignore -->
+* We can't know the Individual Treatment Effect (ITE)
   $$Y_i(\text{blue pill}) - Y_i(\text{red pill})$$
-- Yet, we **can estimate** the **Conditional Average Treatment Effect (CATE)**
+* Yet, we **can estimate** the **Conditional Average Treatment Effect (CATE)**
   $$\tau(X) := \mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})|X]$$
-  - Note the difference from the Average Treatment Effect
+  * Note the difference from the Average Treatment Effect
     $$\mathbb{E}[Y(\text{blue pill}) - Y(\text{red pill})]$$
 
 ---
@@ -171,8 +175,9 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 
 ## Estimating CATEs
 
-- There are various approaches for estimating CATEs.
-- MetaLearners are a family of approaches for estimating CATEs.
+<!-- prettier-ignore -->
+* There are various approaches for estimating CATEs.
+* MetaLearners are a family of approaches for estimating CATEs.
   - Work by [Chernozhukov(2016)](https://arxiv.org/abs/1608.00060), [Nie(2017)](https://arxiv.org/pdf/1712.04912), [Kunzel(2017)](https://arxiv.org/pdf/1706.03461), [Kennedy(2020)](https://arxiv.org/pdf/2004.14497) and more.
 
 ---
@@ -181,8 +186,9 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 
 ![bg right 50%](imgs/metalearner2.drawio.svg)
 
-- MetaLearners are **CATE models** which rely on typical, **arbitrary machine learning estimators** (classifiers or regressors) as **components**.
-- Some examples include the S-Learner, T-Learner, F-Learner, X-Learner, R-Learner, M-Learner and DR-Learner.
+<!-- prettier-ignore -->
+* MetaLearners are **CATE models** which rely on typical, **arbitrary machine learning estimators** (classifiers or regressors) as **components**.
+* Some examples include the S-Learner, T-Learner, F-Learner, X-Learner, R-Learner, M-Learner and DR-Learner.
 
 ---
 
@@ -190,11 +196,12 @@ In order to get to a **decision** as to give what pill to whom, we can now follo
 
 ![bg right 80%](imgs/metalearner.drawio.svg)
 
-- Input
+<!-- prettier-ignore -->
+* Input
   - $W$: Treatment assignments
   - $X$: Covariates/features
   - $Y$: Outcomes
-- Output
+* Output
   - $\hat{\tau}(X)$: CATE estimates
 
 ---
