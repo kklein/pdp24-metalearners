@@ -29,27 +29,24 @@ Kevin Klein (@kevkle)
 
 ---
 
-<!-- prettier-ignore -->
 ## Let the data decide!
 
-- We not only want to predict what happens in a world in which we don't have influence on the environment/data generating process.
-
-- Rather, we want to **decide** which **intervention** to choose.
-
-- Intuitively, in order to decide, we'd like to **compare the 'outcomes'** if taking the blue pill compared to the outcome of taking the red pill.
+<!-- prettier-ignore -->
+* We not only want to predict what happens in a world in which we don't have influence on the environment/data generating process.
+* Rather, we want to **decide** which **intervention** to choose.
+* Intuitively, in order to decide, we'd like to **compare the 'outcomes'** if taking the blue pill compared to the outcome of taking the red pill.
   $$Y(\text{blue pill}) - Y(\text{red pill})$$
-  - This is a **causal** problem
 
 ---
 
-<!-- prettier-ignore -->
 ## The data
 
-- We conducted an empirical experiment to gather data.
-- This empirical **data** on individuals, who have
-  - had their **properties**/covariates evaluated at the time of the intervention
-  - been subject to the **intervention** (taking either of both pills)
-  - had the **outcome** of their happiness measured, 5 years after the intervention
+<!-- prettier-ignore -->
+* We conducted an empirical experiment to gather data.
+* This empirical **data** on individuals, who have
+  * had their properties/**covariates** evaluated at the time of the intervention
+  * been subject to the **intervention** (taking either of both pills)
+  * had the **outcome** of their happiness measured, 5 years after the intervention
 
 ---
 
@@ -57,11 +54,11 @@ Kevin Klein (@kevkle)
 
 Our experiment data contains three different kinds of quantities per individual $i$:
 
-| Name         | Symbol | Definition                                                                    |
-| ------------ | ------ | ----------------------------------------------------------------------------- |
-| Covariates   | $X_i$  | Properties of the time of intervention                                        |
-| Intervention | $W_i$  | $\begin{cases} 1 & \text{if blue pill} \\ 0 & \text{if red pill} \end{cases}$ |
-| Outcome      | $Y_i$  | Happiness score ($\mathbb{R}$) 5 years after intervention                     |
+| Name                  | Symbol | Definition                                                                    |
+| --------------------- | ------ | ----------------------------------------------------------------------------- |
+| Covariates            | $X_i$  | Properties of the time of intervention                                        |
+| Treatment assignments | $W_i$  | $\begin{cases} 1 & \text{if blue pill} \\ 0 & \text{if red pill} \end{cases}$ |
+| Outcome               | $Y_i$  | Happiness score ($\mathbb{R}$) 5 years after intervention                     |
 
 $\mathcal{D} = \{ (X_i, W_i, Y_i)\}$
 
