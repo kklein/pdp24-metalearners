@@ -424,7 +424,7 @@ def plot_dgp_dag() -> None:
 
 
 if __name__ == "__main__":
-    # plot_dgp_dag()
+    plot_dgp_dag()
 
     rng = np.random.default_rng(1337)
     (
