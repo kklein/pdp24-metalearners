@@ -2,7 +2,7 @@
 theme: base
 paginate: true
 header: "![w:50px](imgs/quantco.svg)"
-footer: Francesc Martí Escofet [@fmartiescofet](https://twitter.com/fmartiescofet), Kevin Klein [@kevkle](https://twitter.com/kevkle)
+footer: Kevin Klein [@kevkle](https://twitter.com/kevkle)
 ---
 
 ![bg](imgs/monet-library.png)
@@ -17,7 +17,6 @@ footer: Francesc Martí Escofet [@fmartiescofet](https://twitter.com/fmartiescof
 
 ## Flexible MetaLearners in Python
 
-Francesc Martí Escofet (@fmartiescofet)
 Kevin Klein (@kevkle)
 
 ---
@@ -429,6 +428,8 @@ rlearner_new.fit(
 
 ---
 
+<!--
+
 ## Reusing base models across different MetaLearners
 
 <div data-marpit-fragment>
@@ -464,6 +465,8 @@ drlearner.fit(
 
 ---
 
+-->
+
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
@@ -491,36 +494,6 @@ img[alt~="center"] {
 
 ---
 
-## And much more...
-
-- Integrated with `optuna`, `lime`, `onnx`
-- Supports `pandas`, `numpy`, `scipy.sparse`
-  - `polars` in the next release
-
----
-
-| The Matrix      | Blue Pill          | Red Pill              |
-| --------------- | ------------------ | --------------------- |
-| Marketing       | Gets a voucher     | Doesn't get a voucher |
-| Education       | Teaching w/ tablet | Teaching /wo tablet   |
-| Medicine        | Pfizer             | Moderna               |
-| Fraud detection | Human processing   | Automated processing  |
-
----
-
-<!-- _footer: ''-->
-<!-- _header: ''-->
-
-![bg left 80%](imgs/qr-metalearners.svg)
-
-## Please leave feedback on GitHub! :)
-
-[github.com/QuantCo/metalearners](https://github.com/QuantCo/metalearners)
-
-[github.com/kklein/pdp24-metalearners](https://github.com/kklein/pdp24-metalearners)
-
----
-
 <!-- _footer: ''-->
 <!-- _header: ''-->
 
@@ -542,6 +515,38 @@ Join us!
 ---
 
 # Backup
+
+---
+
+## Some integrations
+
+- Integrated with `optuna`, `lime`, `onnx`
+- Supports `pandas`, `numpy`, `scipy.sparse`
+  - `polars` in the next release
+
+---
+
+## Use cases
+
+| The Matrix      | Blue Pill          | Red Pill              |
+| --------------- | ------------------ | --------------------- |
+| Marketing       | Gets a voucher     | Doesn't get a voucher |
+| Education       | Teaching w/ tablet | Teaching /wo tablet   |
+| Medicine        | Pfizer             | Moderna               |
+| Fraud detection | Human processing   | Automated processing  |
+
+---
+
+<!-- _footer: ''-->
+<!-- _header: ''-->
+
+![bg left 80%](imgs/qr-metalearners.svg)
+
+## Please leave feedback on GitHub! :)
+
+[github.com/QuantCo/metalearners](https://github.com/QuantCo/metalearners)
+
+[github.com/kklein/pdp24-metalearners](https://github.com/kklein/pdp24-metalearners)
 
 ---
 
